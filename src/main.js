@@ -1,46 +1,31 @@
 import * as ArticlesModel from "./articles.js";
 
-ArticlesModel.all(
-  (articles) => {
-    console.log("articles count = " + articles.length);
+ArticlesModel.all().then((articles) => {
+  console.log("articles count = " + articles.length);
+  let ind = Math.floor(Math.random() * articles.length);
+  console.log("select index " + ind + ", id = " + articles[ind].id);
 
-    // берём случайный индекс
-    let ind = Math.floor(Math.random() * articles.length);
-    console.log("select index " + ind + ", id = " + articles[ind].id);
+  ArticlesModel.get(articles[ind].id)
+    .then((article) => {
+      console.log(article);
+    })
+    .catch((error) => {
+      console.log(error + " in articles one");
+    });
 
-    // получаем статью по id
-    ArticlesModel.one(
-      articles[ind].id,
-      (article) => {
-        console.log(article);
+  ArticlesModel.remove(articles[ind].id)
+    .then((res) => {
+      console.log("что с удалением? - " + res);
+    })
+    .catch((error) => {
+      console.log(error + " in articles delete");
+    });
 
-        // пробуем удалить её
-        ArticlesModel.remove(
-          article.id,
-          (res) => {
-            console.log("что с удалением? - " + res);
-
-            // а сколько статей в базе сейчас
-            ArticlesModel.all(
-              (articles) => {
-                console.log("articles count = " + articles.length);
-              },
-              (error) => {
-                console.log(error + " in articles list after delete");
-              }
-            );
-          },
-          (error) => {
-            console.log(error + " in articles delete");
-          }
-        );
-      },
-      (error) => {
-        console.log(error + " in articles one");
-      }
-    );
-  },
-  (error) => {
-    console.log(error + " in articles list");
-  }
-);
+  ArticlesModel.all()
+    .then((articles) => {
+      console.log("articles count = " + articles.length);
+    })
+    .catch((error) => {
+      console.log(error + " in articles list");
+    });
+});
