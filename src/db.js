@@ -4,8 +4,8 @@
 const GLOBAL_PROPABILITY = 1;
 const BAD_JSON_PROPABILITY = 0;
 
-export function all() {
-  return TimeoutPropabiliry(
+export async function all() {
+  return await TimeoutPropabiliry(
     300,
     GLOBAL_PROPABILITY,
     () => serverAnswer(articlesStorage),
@@ -16,8 +16,8 @@ export function all() {
  * Получить статью по id
  * @param {int} id Id статьи
  */
-export function get(id) {
-  return TimeoutPropabiliry(
+export async function get(id) {
+  return await TimeoutPropabiliry(
     300,
     GLOBAL_PROPABILITY,
     () => serverAnswer(articlesStorage[mapArticles[id]]),
@@ -29,8 +29,8 @@ export function get(id) {
  * Удалить статью из базы
  * @param {int} id Id статьи
  */
-export function remove(id) {
-  return TimeoutPropabiliry(
+export async function remove(id) {
+  return await TimeoutPropabiliry(
     300,
     GLOBAL_PROPABILITY,
     () => {

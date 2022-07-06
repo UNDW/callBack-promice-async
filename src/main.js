@@ -1,31 +1,35 @@
 import * as ArticlesModel from "./articles.js";
-
-ArticlesModel.all().then((articles) => {
-  console.log("articles count = " + articles.length);
-  let ind = Math.floor(Math.random() * articles.length);
-  console.log("select index " + ind + ", id = " + articles[ind].id);
-
-  ArticlesModel.get(articles[ind].id)
-    .then((article) => {
-      console.log(article);
-    })
-    .catch((error) => {
-      console.log(error + " in articles one");
-    });
-
-  ArticlesModel.remove(articles[ind].id)
-    .then((res) => {
-      console.log("что с удалением? - " + res);
-    })
-    .catch((error) => {
-      console.log(error + " in articles delete");
-    });
-
-  ArticlesModel.all()
-    .then((articles) => {
-      console.log("articles count = " + articles.length);
-    })
-    .catch((error) => {
-      console.log(error + " in articles list");
-    });
-});
+(async function main() {
+  //ALL
+  let allArticles = [];
+  let ind = 0;
+  try {
+    allArticles = await ArticlesModel.all();
+    console.log("articles count = " + allArticles.length);
+    ind = Math.floor(Math.random() * allArticles.length);
+    console.log("select index " + ind + ", id = " + allArticles[ind].id);
+  } catch (error) {
+    console.log(error + " in articles list");
+    return;
+  }
+  //GET
+  try {
+    const getArticles = await ArticlesModel.get(allArticles[ind].id);
+    console.log(getArticles);
+  } catch (error) {
+    console.log(error + " in articles one");
+  }
+  //REMOVE
+  try {
+    const removeArticles = await ArticlesModel.remove(allArticles[ind].id);
+    console.log("что с удалением? - " + removeArticles);
+  } catch (error) {
+    console.log(error + " in articles delete");
+  }
+  // ALL AFTER DELETE
+  try {
+    console.log("articles count = " + allArticles.length);
+  } catch (error) {
+    console.log(error + " in articles list after delete");
+  }
+})();
